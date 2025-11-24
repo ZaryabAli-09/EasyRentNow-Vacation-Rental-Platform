@@ -1,7 +1,6 @@
 import { dbConnect } from "@/lib/db";
 import { getErrorMessage, response } from "@/lib/helperFunctions";
 import { Home } from "@/models/Home";
-import { NextRequest } from "next/server";
 
 export async function GET() {
   try {

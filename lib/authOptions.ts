@@ -3,6 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { dbConnect } from "./db";
 import { User } from "@/models/User";
 import bcrypt from "bcryptjs";
+import { getErrorMessage } from "./helperFunctions";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -16,6 +17,7 @@ export const authOptions: NextAuthOptions = {
         },
         password: { label: "Password", type: "password" },
       },
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       async authorize(credentials: any): Promise<any> {
         try {
           await dbConnect();
@@ -45,16 +47,16 @@ export const authOptions: NextAuthOptions = {
             role: user.role,
             name: user.username,
           };
-        } catch (error: unknown) {
-          throw new Error("Error occur while signing in");
+        } catch (err: unknown) {
+          throw new Error(getErrorMessage(err));
         }
       },
     }),
   ],
 
   callbacks: {
-    async redirect({ baseUrl }) {
-      return `${baseUrl}/`;
+    async redirect({ url, baseUrl }) {
+      return `${baseUrl}`;
     },
 
     async jwt({ token, user }) {

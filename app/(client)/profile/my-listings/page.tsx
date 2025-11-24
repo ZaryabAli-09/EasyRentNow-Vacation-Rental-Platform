@@ -5,6 +5,14 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
+interface Home {
+  _id: string;
+  description: string;
+  photo: string;
+  country: string;
+  price: number;
+}
+
 export default function MyListings() {
   const { data: session } = useSession();
   const userId = session?.user?._id;
@@ -59,7 +67,7 @@ export default function MyListings() {
       }
 
       toast.success("Listing deleted successfully!");
-      setMyHomes((prev) => prev.filter((home: any) => home._id !== homeId));
+      setMyHomes((prev) => prev.filter((home: Home) => home._id !== homeId));
     } catch (err: unknown) {
       toast.error(getErrorMessage(err));
     }

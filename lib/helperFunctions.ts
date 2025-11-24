@@ -1,11 +1,10 @@
 import { NextResponse } from "next/server";
 
-// function to format response
-export function response(
+export function response<T = unknown>(
   success: boolean,
   status: number,
   message: string,
-  data?: any
+  data?: T
 ) {
   return NextResponse.json(
     {

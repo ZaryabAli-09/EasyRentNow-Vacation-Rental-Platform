@@ -5,6 +5,14 @@ import { useEffect, useState } from "react";
 import { ListingCard } from "@/app/custom components/ListingCard";
 import { Navbar } from "@/app/custom components/Navbar";
 
+interface Home {
+  _id: string;
+  description: string;
+  photo: string;
+  country: string;
+  price: number;
+}
+
 export default function SearchPage() {
   const searchParams = useSearchParams();
   const [homes, setHomes] = useState([]);
@@ -46,7 +54,7 @@ export default function SearchPage() {
         {!loading && homes.length === 0 && <p>No homes found.</p>}
 
         <div className="grid lg:grid-cols-4 sm:grid-cols-2 gap-8">
-          {homes.map((home: any) => (
+          {homes.map((home: Home) => (
             <ListingCard
               key={home._id}
               description={home.description}

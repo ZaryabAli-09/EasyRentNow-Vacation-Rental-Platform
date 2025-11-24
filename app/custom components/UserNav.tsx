@@ -22,6 +22,7 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { getErrorMessage } from "@/lib/helperFunctions";
 
 export function UserNav() {
   const { data: session } = useSession();
@@ -37,8 +38,8 @@ export function UserNav() {
     try {
       await signOut();
       toast.success("Signed out successfully!", { id: toastId });
-    } catch (error: unknown) {
-      toast.error("Failed to sign out", { id: toastId });
+    } catch (err: unknown) {
+      toast.error(getErrorMessage(err), { id: toastId });
     } finally {
       setIsLoggingOut(false);
     }

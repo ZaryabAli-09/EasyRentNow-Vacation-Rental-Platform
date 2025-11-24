@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const { country, guest, room, bathroom } = body;
 
-    const matchStage: any = {};
+    const matchStage: Record<string, unknown> = {};
 
     if (country) matchStage.country = country;
     if (guest) matchStage.guests = { $gte: guest };
