@@ -20,18 +20,18 @@ export function SelectCategory({ value, onSelect }: SelectCategoryProps) {
               transition-all duration-200
               ${
                 value === item.name
-                  ? "border-2 border-black shadow-md"
-                  : "border"
+                  ? "border-4 border-rose-600 shadow-md"
+                  : "border-4 border-gray-50"
               }
             `}
           >
-            <CardHeader className="flex flex-col items-center gap-3 p-2">
+            <CardHeader className="flex flex-col items-center gap-3 p-1">
               <Image
                 src={item.imageUrl}
                 alt={item.name}
-                height={32}
-                width={32}
-                className="w-8 h-8"
+                height={28}
+                width={28}
+                className="w-7 h-7"
               />
               <h3 className="font-medium text-center">{item.title}</h3>
             </CardHeader>
