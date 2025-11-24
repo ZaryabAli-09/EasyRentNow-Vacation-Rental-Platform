@@ -6,13 +6,13 @@ import { dbConnect } from "@/lib/db";
 
 export const POST = async (
   req: NextRequest,
-  params: { params: { userId: string } }
+  context: { params: { userId: string } } // ✅ this is correct
 ) => {
   await dbConnect();
 
   try {
     const formData = await req.formData();
-    const { userId } = await params.params;
+    const { userId } = context.params;
 
     // ----------------- EXTRACT FIELDS -----------------
     const category = formData.get("category") as string;

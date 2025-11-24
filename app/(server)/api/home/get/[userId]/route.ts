@@ -4,10 +4,10 @@ import { NextRequest } from "next/server";
 import mongoose from "mongoose";
 export async function GET(
   req: NextRequest,
-  params: { params: { userId: string } }
+  context: { params: { userId: string } } // ✅ this is correct
 ) {
   try {
-    const { userId } = await params.params;
+    const { userId } = context.params;
     if (!userId) {
       return response(false, 404, "UserId not found");
     }
