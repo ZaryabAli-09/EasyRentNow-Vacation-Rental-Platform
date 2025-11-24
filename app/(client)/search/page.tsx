@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { ListingCard } from "@/app/custom components/ListingCard";
 import { Navbar } from "@/app/custom components/Navbar";
 
@@ -15,36 +15,43 @@ interface Home {
 
 export default function SearchPage() {
   const searchParams = useSearchParams();
-  const [homes, setHomes] = useState([]);
+  const [homes, setHomes] = useState<Home[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // Read query params
   const filters = {
-    country: searchParams.get("country"),
-    guest: searchParams.get("guest"),
-    room: searchParams.get("room"),
-    bathroom: searchParams.get("bathroom"),
+    country: searchParams.get("country") || "",
+    guest: searchParams.get("guest") || "",
+    room: searchParams.get("room") || "",
+    bathroom: searchParams.get("bathroom") || "",
   };
 
-  async function fetchSearchHomes() {
-    try {
-      const res = await fetch("/api/home/search", {
-        method: "POST",
-        body: JSON.stringify(filters),
-      });
-
-      const data = await res.json();
-      setHomes(data.data || []);
-    } finally {
-      setLoading(false);
-    }
-  }
-
   useEffect(() => {
+    async function fetchSearchHomes() {
+      setLoading(true);
+      try {
+        const res = await fetch("/api/home/search", {
+          method: "POST",
+          body: JSON.stringify(filters),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const data = await res.json();
+        setHomes(data.data || []);
+      } catch (err) {
+        console.error("Error fetching homes:", err);
+        setHomes([]);
+      } finally {
+        setLoading(false);
+      }
+    }
+
     fetchSearchHomes();
-  }, []);
+  }, [filters.country, filters.guest, filters.room, filters.bathroom]);
 
   return (
-    <Suspense fallback={<div>Loading..</div>}>
+    <>
       <Navbar label={`Search: ${filters.country || "Results"}`} />
 
       <div className="container mx-auto px-5 lg:px-10 mt-5">
@@ -66,6 +73,6 @@ export default function SearchPage() {
           ))}
         </div>
       </div>
-    </Suspense>
+    </>
   );
 }
