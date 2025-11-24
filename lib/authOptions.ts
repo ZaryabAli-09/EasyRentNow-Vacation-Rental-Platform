@@ -1,4 +1,4 @@
-import { DefaultSession, NextAuthOptions } from "next-auth";
+import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { dbConnect } from "./db";
 import { User } from "@/models/User";
@@ -53,7 +53,7 @@ export const authOptions: NextAuthOptions = {
   ],
 
   callbacks: {
-    async redirect({ url, baseUrl }) {
+    async redirect({ baseUrl }) {
       return `${baseUrl}/`;
     },
 

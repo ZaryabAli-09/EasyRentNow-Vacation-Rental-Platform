@@ -1,11 +1,8 @@
 "use client";
-
-import { signIn } from "next-auth/react";
 import Link from "next/link";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { z } from "zod";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 // shadcn imports
@@ -16,7 +13,6 @@ import {
   FieldDescription,
   FieldGroup,
   FieldLabel,
-  FieldSeparator,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { getErrorMessage } from "@/lib/helperFunctions";

@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { Home } from "@/models/Home";
 import { dbConnect } from "@/lib/db";
 import { getErrorMessage, response } from "@/lib/helperFunctions";
@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
     ]);
 
     return response(true, 200, "Successfully get Listings by search", homes);
-  } catch (err: any) {
+  } catch (err: unknown) {
     return response(false, 500, getErrorMessage(err));
   }
 }

@@ -3,7 +3,7 @@ import { getErrorMessage, response } from "@/lib/helperFunctions";
 import { Home } from "@/models/Home";
 import { NextRequest } from "next/server";
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   try {
     await dbConnect();
 

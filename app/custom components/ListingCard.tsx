@@ -2,13 +2,21 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCountries } from "@/lib/getCountries";
 
+interface IListCard {
+  description: string;
+  imagePath: string;
+  location: string;
+  price: number;
+  homeId: string;
+}
+
 export function ListingCard({
   description,
   imagePath,
   location,
   price,
   homeId,
-}: any) {
+}: IListCard) {
   const { getCountryByValue } = useCountries();
   const country = getCountryByValue(location);
 

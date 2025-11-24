@@ -1,7 +1,6 @@
 "use client";
 import { ProfileListingTable } from "@/app/custom components/ProfileListingTable";
 import { getErrorMessage } from "@/lib/helperFunctions";
-import { divIcon } from "leaflet";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -34,8 +33,6 @@ export default function MyListings() {
   }
   useEffect(() => {
     if (userId) fetchMyHomesListings();
-    {
-    }
   }, [userId]);
   async function handleDelete(homeId: string, photoUrl: string) {
     if (!userId) return toast.error("You are not authorized.");

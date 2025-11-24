@@ -11,7 +11,24 @@ import Link from "next/link";
 import { useCountries } from "@/lib/getCountries";
 import { Button } from "@/components/ui/button";
 
-export function ProfileListingTable({ myHomes, loading, handleDelete }: any) {
+interface Home {
+  _id: string;
+  photo: string;
+  country: string;
+  price: number;
+}
+
+interface IListTable {
+  myHomes: Home[];
+  loading: boolean;
+  handleDelete: (homeId: string, imagePath: string) => void;
+}
+
+export function ProfileListingTable({
+  myHomes,
+  loading,
+  handleDelete,
+}: IListTable) {
   const { getCountryByValue } = useCountries();
 
   return (
@@ -37,7 +54,7 @@ export function ProfileListingTable({ myHomes, loading, handleDelete }: any) {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {myHomes.map((home: any) => {
+              {myHomes.map((home: Home) => {
                 const country = getCountryByValue(home.country);
 
                 return (
