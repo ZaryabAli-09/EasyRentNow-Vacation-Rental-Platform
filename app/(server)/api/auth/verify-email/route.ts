@@ -1,5 +1,5 @@
 import { dbConnect } from "@/lib/db";
-import { response } from "@/lib/helperFunctions";
+import { getErrorMessage, response } from "@/lib/helperFunctions";
 import { User } from "@/models/User";
 import { NextRequest } from "next/server";
 
@@ -52,8 +52,7 @@ export async function POST(req: NextRequest) {
     await user.save();
 
     return response(true, 200, "Email verified successfully");
-  } catch (error) {
-    console.error("Error verifying email:", error);
-    return response(false, 500, "Internal Server Error");
+  } catch (err: unknown) {
+    return response(false, 500, getErrorMessage(err));
   }
 }

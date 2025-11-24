@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { dbConnect } from "@/lib/db";
 import { Home } from "@/models/Home";
-import { response } from "@/lib/helperFunctions";
+import { getErrorMessage, response } from "@/lib/helperFunctions";
 import { cloudinary } from "@/lib/cloudinaryConfig";
 
 export async function DELETE(req: NextRequest) {
@@ -31,8 +31,7 @@ export async function DELETE(req: NextRequest) {
     await Home.findByIdAndDelete(homeId);
 
     return response(true, 200, "Listing deleted successfully");
-  } catch (error: any) {
-    console.error(error);
-    return response(false, 501, "Something went wrong");
+  } catch (err: unknown) {
+    return response(false, 500, getErrorMessage(err));
   }
 }

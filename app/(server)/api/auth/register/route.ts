@@ -2,7 +2,7 @@ import { dbConnect } from "@/lib/db";
 import { NextRequest } from "next/server";
 import { User } from "@/models/User";
 import { sendEmail } from "@/lib/nodemailer";
-import { generateOtp, response } from "@/lib/helperFunctions";
+import { generateOtp, getErrorMessage, response } from "@/lib/helperFunctions";
 import { verificationEmailTemplate } from "@/lib/emails/VerificationEmailTemplate";
 import { z } from "zod";
 
@@ -92,8 +92,7 @@ export async function POST(req: NextRequest) {
       "User registered successfully, please verify your email",
       user._id
     );
-  } catch (error) {
-    console.error("Error in reset password route:", error);
-    return response(false, 500, "Internal server error");
+  } catch (err: unknown) {
+    return response(false, 500, getErrorMessage(err));
   }
 }

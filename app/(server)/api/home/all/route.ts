@@ -1,5 +1,5 @@
 import { dbConnect } from "@/lib/db";
-import { response } from "@/lib/helperFunctions";
+import { getErrorMessage, response } from "@/lib/helperFunctions";
 import { Home } from "@/models/Home";
 import { NextRequest } from "next/server";
 
@@ -26,8 +26,7 @@ export async function GET(req: NextRequest) {
     ]);
 
     return response(true, 200, "Success", homes);
-  } catch (error) {
-    console.error((error as Error).message);
-    return response(false, 501, "Something Went Wrong");
+  } catch (err: unknown) {
+    return response(false, 500, getErrorMessage(err));
   }
 }

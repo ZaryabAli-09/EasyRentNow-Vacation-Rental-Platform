@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import { cloudinary } from "@/lib/cloudinaryConfig";
 import { Home } from "@/models/Home";
-import { response } from "@/lib/helperFunctions";
+import { getErrorMessage, response } from "@/lib/helperFunctions";
 import { dbConnect } from "@/lib/db";
 
 export const POST = async (
@@ -67,12 +67,12 @@ export const POST = async (
       });
 
       return response(true, 200, "Home created successfully", newHome);
-    } catch (err: any) {
+    } catch (err: unknown) {
       // If DB save fails, delete image from Cloudinary
       await cloudinary.uploader.destroy(cloudinaryId);
-      return response(false, 500, err.message || "Failed to create home.");
+      return response(false, 500, getErrorMessage(err));
     }
-  } catch (err: any) {
-    return response(false, 500, err.message || "Internal server error");
+  } catch (err: unknown) {
+    return response(false, 500, getErrorMessage(err));
   }
 };

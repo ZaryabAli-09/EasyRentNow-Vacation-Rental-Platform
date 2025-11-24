@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import dynamic from "next/dynamic";
 import { SelectCategory } from "@/app/custom components/SelectedCategory";
@@ -25,6 +24,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowBigLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { getErrorMessage } from "@/lib/helperFunctions";
 export default function FullHomeCreationPage() {
   const { data: session } = useSession();
   const userid = session?.user?._id;
@@ -82,8 +82,8 @@ export default function FullHomeCreationPage() {
         toast.error(result.message);
         setLoading(false);
       }
-    } catch (error) {
-      toast.error("Something went wrong");
+    } catch (err: unknown) {
+      toast.error(getErrorMessage(err));
     } finally {
       setLoading(false);
     }

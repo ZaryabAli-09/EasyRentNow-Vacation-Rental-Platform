@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Field, FieldGroup } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { getErrorMessage } from "@/lib/helperFunctions";
 
 const emailSchema = z.string().email("Invalid email address");
 
@@ -47,9 +48,8 @@ export function ForgotPasswordForm({
       toast.success(data.message || "Password reset link sent to your email");
       setEmail("");
       setLoading(false);
-    } catch (error) {
-      console.error("Error submitting form:", error);
-      toast.error("Failed to submit the form. Please try again.");
+    } catch (err: unknown) {
+      toast.error(getErrorMessage(err));
       setLoading(false);
     }
   }

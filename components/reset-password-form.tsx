@@ -17,6 +17,7 @@ import {
   FieldSeparator,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { getErrorMessage } from "@/lib/helperFunctions";
 
 const passwordScehma = z.string().min(6, "Password must be 6 characters");
 
@@ -56,9 +57,8 @@ export function ResetPasswordForm({
       setNewPassword("");
       setLoading(false);
       router.push("/sign-in");
-    } catch (error: any) {
-      console.error("Error submitting form:", error);
-      toast.error(error.message);
+    } catch (err: unknown) {
+      toast.error(getErrorMessage(err));
       setLoading(false);
     }
   }

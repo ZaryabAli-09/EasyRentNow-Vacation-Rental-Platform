@@ -45,8 +45,8 @@ export const authOptions: NextAuthOptions = {
             role: user.role,
             name: user.username,
           };
-        } catch (error: any) {
-          throw new Error(error);
+        } catch (error: unknown) {
+          throw new Error("Error occur while signing in");
         }
       },
     }),
@@ -54,7 +54,7 @@ export const authOptions: NextAuthOptions = {
 
   callbacks: {
     async redirect({ url, baseUrl }) {
-      return `${baseUrl}/app/trips`;
+      return `${baseUrl}/`;
     },
 
     async jwt({ token, user }) {

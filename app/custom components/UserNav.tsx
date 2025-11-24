@@ -37,7 +37,7 @@ export function UserNav() {
     try {
       await signOut();
       toast.success("Signed out successfully!", { id: toastId });
-    } catch (error) {
+    } catch (error: unknown) {
       toast.error("Failed to sign out", { id: toastId });
     } finally {
       setIsLoggingOut(false);

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Home } from "@/models/Home";
 import { dbConnect } from "@/lib/db";
-import { response } from "@/lib/helperFunctions";
+import { getErrorMessage, response } from "@/lib/helperFunctions";
 
 export async function POST(req: NextRequest) {
   try {
@@ -29,8 +29,7 @@ export async function POST(req: NextRequest) {
     ]);
 
     return response(true, 200, "Successfully get Listings by search", homes);
-  } catch (error: any) {
-    console.error((error as Error).message);
-    return response(false, 501, "Something Went Wrong");
+  } catch (err: any) {
+    return response(false, 500, getErrorMessage(err));
   }
 }

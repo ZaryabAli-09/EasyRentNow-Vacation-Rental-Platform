@@ -1,4 +1,4 @@
-import { response } from "@/lib/helperFunctions";
+import { getErrorMessage, response } from "@/lib/helperFunctions";
 import { NextRequest } from "next/server";
 import crypto from "crypto";
 import { dbConnect } from "@/lib/db";
@@ -48,8 +48,7 @@ export async function GET(req: NextRequest) {
     await user.save();
 
     return response(true, 200, "Password reset successfully");
-  } catch (error) {
-    console.error("Error in reset password route:", error);
-    return response(false, 500, "Internal server error");
+  } catch (err: unknown) {
+    return response(false, 500, getErrorMessage(err));
   }
 }

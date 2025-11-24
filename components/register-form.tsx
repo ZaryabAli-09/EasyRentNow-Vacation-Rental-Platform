@@ -19,6 +19,7 @@ import {
   FieldSeparator,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { getErrorMessage } from "@/lib/helperFunctions";
 
 // zod schemas for sign in form
 const formSchema = z.object({
@@ -75,8 +76,8 @@ export function RegisterForm({
       setConfirmRegistration(false);
       setLoading(false);
       router.push("/sign-in");
-    } catch (error: any) {
-      toast.error(error);
+    } catch (err: unknown) {
+      toast.error(getErrorMessage(err));
       setLoading(false);
     }
   }
@@ -111,8 +112,8 @@ export function RegisterForm({
       setConfirmRegistration(true);
       setUserId(data.data);
       setLoading(false);
-    } catch (error: any) {
-      toast.error(error);
+    } catch (err: unknown) {
+      toast.error(getErrorMessage(err));
       setLoading(false);
     }
   }

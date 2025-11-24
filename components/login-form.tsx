@@ -18,6 +18,7 @@ import {
   FieldSeparator,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { getErrorMessage } from "@/lib/helperFunctions";
 
 // zod schemas for sign in form
 const formSchema = z.object({
@@ -63,8 +64,8 @@ export function LoginForm({
         setLoading(false);
         router.push("/");
       }
-    } catch (error: any) {
-      toast.error(error.message);
+    } catch (err: unknown) {
+      toast.error(getErrorMessage(err));
       setLoading(false);
     }
   }

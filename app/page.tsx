@@ -4,6 +4,7 @@ import { ListingCard } from "./custom components/ListingCard";
 import { useEffect, useState } from "react";
 import { MapFilterItems } from "./custom components/MapFilterItems";
 import toast from "react-hot-toast";
+import { getErrorMessage } from "@/lib/helperFunctions";
 
 interface Home {
   _id: string;
@@ -28,9 +29,9 @@ export default function App() {
       }
 
       setHomes(data.data || []);
-    } catch (error: any) {
-      toast.error(error.message);
-      console.error("Error:", error);
+    } catch (err: unknown) {
+      toast.error(getErrorMessage(err));
+      console.error("Error:", err);
     } finally {
       setLoading(false);
     }

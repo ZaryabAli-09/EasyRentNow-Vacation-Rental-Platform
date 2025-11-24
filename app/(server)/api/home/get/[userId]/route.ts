@@ -1,4 +1,4 @@
-import { response } from "@/lib/helperFunctions";
+import { getErrorMessage, response } from "@/lib/helperFunctions";
 import { Home } from "@/models/Home";
 import { NextRequest } from "next/server";
 import mongoose from "mongoose";
@@ -34,8 +34,7 @@ export async function GET(
     ]);
 
     return response(true, 200, "Successfully get my Listings", homes);
-  } catch (error: any) {
-    console.error((error as Error).message);
-    return response(false, 501, "Something Went Wrong");
+  } catch (err: unknown) {
+    return response(false, 500, getErrorMessage(err));
   }
 }

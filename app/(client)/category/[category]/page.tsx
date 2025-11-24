@@ -6,6 +6,8 @@ import { MapFilterItems } from "@/app/custom components/MapFilterItems";
 import { Navbar } from "@/app/custom components/Navbar";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { getErrorMessage } from "@/lib/helperFunctions";
+import toast from "react-hot-toast";
 
 interface CategoryPageProps {
   params: Promise<{ category: string }>; // mark as promise
@@ -35,8 +37,9 @@ export default function CategoryPage({ params }: CategoryPageProps) {
         });
         const data = await res.json();
         setHomes(data.data || []);
-      } catch (error) {
-        console.error(error);
+      } catch (err) {
+        console.error(err);
+        toast.error(getErrorMessage(err));
       } finally {
         setLoading(false);
       }

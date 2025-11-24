@@ -17,6 +17,13 @@ export function response(
   );
 }
 
+// utils/getErrorMessage.ts
+export function getErrorMessage(err: unknown): string {
+  if (err instanceof Error) return err.message;
+  if (typeof err === "string") return err;
+  return "Internal server error";
+}
+
 // function for genrating otp
 export async function generateOtp() {
   const otp = Math.floor(100000 + Math.random() * 900000).toString(); // Generate a 6-digit OTP

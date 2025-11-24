@@ -1,5 +1,5 @@
 import { dbConnect } from "@/lib/db";
-import { response } from "@/lib/helperFunctions";
+import { getErrorMessage, response } from "@/lib/helperFunctions";
 import { User } from "@/models/User";
 import { NextRequest } from "next/server";
 import crypto from "crypto";
@@ -55,8 +55,7 @@ export async function POST(req: NextRequest) {
       200,
       "Password reset email sent, please check your inbox"
     );
-  } catch (error) {
-    console.error("Error in forgot password route:", error);
-    return response(false, 500, "Internal server error");
+  } catch (err: unknown) {
+    return response(false, 500, getErrorMessage(err));
   }
 }

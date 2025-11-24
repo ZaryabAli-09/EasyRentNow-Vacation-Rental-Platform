@@ -1,5 +1,6 @@
 "use client";
 import { ProfileListingTable } from "@/app/custom components/ProfileListingTable";
+import { getErrorMessage } from "@/lib/helperFunctions";
 import { divIcon } from "leaflet";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
@@ -24,8 +25,8 @@ export default function MyListings() {
       }
       console.log(data);
       setMyHomes(data.data);
-    } catch (error: any) {
-      toast.error(error.message);
+    } catch (err: unknown) {
+      toast.error(getErrorMessage(err));
       setLoading(false);
     } finally {
       setLoading(false);
@@ -62,8 +63,8 @@ export default function MyListings() {
 
       toast.success("Listing deleted successfully!");
       setMyHomes((prev) => prev.filter((home: any) => home._id !== homeId));
-    } catch (error: any) {
-      toast.error(error.message);
+    } catch (err: unknown) {
+      toast.error(getErrorMessage(err));
     }
   }
 

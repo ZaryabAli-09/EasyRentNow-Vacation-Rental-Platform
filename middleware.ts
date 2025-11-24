@@ -18,7 +18,9 @@ export async function middleware(request: NextRequest) {
   // No token → redirect to login
   if (
     !token &&
-    (pathname.startsWith("/admin") || pathname.startsWith("/app"))
+    (pathname.startsWith("/admin") ||
+      pathname.startsWith("/profile") ||
+      pathname.startsWith("/home"))
   ) {
     return NextResponse.redirect(new URL("/sign-in", request.url));
   }
@@ -31,7 +33,7 @@ export async function middleware(request: NextRequest) {
   }
 
   // User routes → only allow logged in users
-  if (pathname.startsWith("/app")) {
+  if (pathname.startsWith("/home") || pathname.startsWith("/profile")) {
     if (token?.role !== "user") {
       return NextResponse.redirect(new URL("/sign-in", request.url));
     }
@@ -41,5 +43,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/app/:path*"], // Protect all /admin/* and /user/* routes
+  matcher: ["/admin/:path*", "/home/:path*", "/profile/:path*"], // Protect all /admin/* and /user/* routes
 };
