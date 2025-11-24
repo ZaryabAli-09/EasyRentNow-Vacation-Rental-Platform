@@ -39,7 +39,6 @@ export function SearchModalCompnent() {
   const router = useRouter();
 
   function submitSearch() {
-    // Construct query string
     const query = new URLSearchParams({
       country: locationValue,
       guest: guest.toString(),
@@ -47,7 +46,6 @@ export function SearchModalCompnent() {
       bathroom: bathroom.toString(),
     }).toString();
 
-    // Redirect to search page with query
     router.push(`/search?${query}`);
   }
 
@@ -55,7 +53,7 @@ export function SearchModalCompnent() {
     <Dialog>
       <DialogTrigger asChild>
         <div className="rounded-full py-2 px-5 border flex items-center cursor-pointer">
-          <div className="flex h-full divide-x font-medium">
+          <div className="sm:flex h-full divide-x font-medium hidden sm:visible">
             <p className="px-4">Anywhere</p>
             <p className="px-4">Any Week</p>
             <p className="px-4">Add Guests</p>

@@ -27,10 +27,9 @@ export function Navbar({ label }: { label?: string }) {
 
         <UserNav />
       </div>
-      {/* Optional label for search/category page */}
       {label && (
-        <div className="text-center py-2 text-sm font-medium bg-gray-100">
-          {label}
+        <div className="text-center text-white py-2 text-sm font-bold bg-rose-500">
+          {label.toUpperCase()}
         </div>
       )}
     </nav>
