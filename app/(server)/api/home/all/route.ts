@@ -4,9 +4,30 @@ import { Home } from "@/models/Home";
 import { NextRequest } from "next/server";
 
 export async function GET(req: NextRequest) {
-  await dbConnect();
+  try {
+    await dbConnect();
 
-  const homes = await Home.find({});
-  console.log(homes);
-  return response(true, 200, "Success", homes);
+    const homes = await Home.aggregate([
+      {
+        $match: {},
+      },
+      {
+        $sort: { createdAt: -1 },
+      },
+      {
+        $project: {
+          _id: 1,
+          description: 1,
+          price: 1,
+          photo: 1,
+          country: 1,
+        },
+      },
+    ]);
+
+    return response(true, 200, "Success", homes);
+  } catch (error) {
+    console.error((error as Error).message);
+    return response(false, 501, "Something Went Wrong");
+  }
 }

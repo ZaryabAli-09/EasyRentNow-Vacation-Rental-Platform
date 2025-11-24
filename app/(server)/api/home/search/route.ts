@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Home } from "@/models/Home";
 import { dbConnect } from "@/lib/db";
+import { response } from "@/lib/helperFunctions";
 
 export async function POST(req: NextRequest) {
   try {
@@ -9,20 +10,27 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const { country, guest, room, bathroom } = body;
 
-    const filter: any = {};
+    const matchStage: any = {};
 
-    if (country) filter.country = country;
-    if (guest) filter.guests = { $gte: guest };
-    if (room) filter.bedrooms = { $gte: room };
-    if (bathroom) filter.bathrooms = { $gte: bathroom };
+    if (country) matchStage.country = country;
+    if (guest) matchStage.guests = { $gte: guest };
+    if (room) matchStage.bedrooms = { $gte: room };
+    if (bathroom) matchStage.bathrooms = { $gte: bathroom };
 
-    const homes = await Home.find(filter).sort({ createdAT: -1 });
+    const homes = await Home.aggregate([
+      {
+        $match: matchStage,
+      },
+      {
+        $sort: {
+          createdAt: -1,
+        },
+      },
+    ]);
 
-    return NextResponse.json({ success: true, data: homes }, { status: 200 });
+    return response(true, 200, "Successfully get Listings by search", homes);
   } catch (error: any) {
-    return NextResponse.json(
-      { success: false, message: error.message },
-      { status: 500 }
-    );
+    console.error((error as Error).message);
+    return response(false, 501, "Something Went Wrong");
   }
 }

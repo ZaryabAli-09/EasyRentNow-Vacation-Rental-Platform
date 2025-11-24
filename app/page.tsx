@@ -3,6 +3,7 @@ import { Navbar } from "./custom components/Navbar";
 import { ListingCard } from "./custom components/ListingCard";
 import { useEffect, useState } from "react";
 import { MapFilterItems } from "./custom components/MapFilterItems";
+import toast from "react-hot-toast";
 
 interface Home {
   _id: string;
@@ -21,6 +22,11 @@ export default function App() {
       setLoading(true);
       const res = await fetch("/api/home/all");
       const data = await res.json();
+      if (!res.ok) {
+        toast.error(data.message);
+        return;
+      }
+
       setHomes(data.data || []);
     } catch (error) {
       console.error("Error:", error);
@@ -28,40 +34,7 @@ export default function App() {
       setLoading(false);
     }
   }
-
-  async function searchHomes(filters: any) {
-    try {
-      setLoading(true);
-      const res = await fetch("/api/home/search", {
-        method: "POST",
-        body: JSON.stringify(filters),
-      });
-      const data = await res.json();
-      setHomes(data.data || []);
-    } catch (error) {
-      console.error("Search error:", error);
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  async function filterByCategory(category: string) {
-    try {
-      setLoading(true);
-      const res = await fetch("/api/home/filter-category", {
-        method: "POST",
-        body: JSON.stringify({ category }),
-      });
-
-      const data = await res.json();
-      setHomes(data.data || []);
-    } catch (error) {
-      console.error("Category filter error:", error);
-    } finally {
-      setLoading(false);
-    }
-  }
-
+  console.log(homes);
   useEffect(() => {
     getHomesListing();
   }, []);
@@ -69,10 +42,8 @@ export default function App() {
   return (
     <>
       <Navbar />
-
       <div className="container mx-auto px-5 lg:px-10">
         <MapFilterItems />
-
         {loading && <p className="text-center mt-10">Loading...</p>}
         {!loading && homes.length === 0 && (
           <p className="text-center mt-10">No homes found.</p>

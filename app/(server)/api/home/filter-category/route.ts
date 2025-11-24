@@ -1,14 +1,31 @@
+import { response } from "@/lib/helperFunctions";
 import { Home } from "@/models/Home";
-import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   try {
     const { category } = await req.json();
-    console.log(category);
-    const homes = await Home.find({ categoryName: category });
 
-    return NextResponse.json({ data: homes });
+    const homes = await Home.aggregate([
+      {
+        $match: {
+          categoryName: category,
+        },
+      },
+      {
+        $sort: {
+          createdAt: -1,
+        },
+      },
+    ]);
+
+    return response(
+      true,
+      200,
+      "Successfully filtered Listings by category",
+      homes
+    );
   } catch (error) {
-    return NextResponse.json({ error: "Server error" }, { status: 500 });
+    console.error((error as Error).message);
+    return response(false, 501, "Something Went Wrong");
   }
 }
