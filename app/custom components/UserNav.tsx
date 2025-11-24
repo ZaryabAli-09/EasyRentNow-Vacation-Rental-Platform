@@ -13,7 +13,7 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { divIcon } from "leaflet";
+
 export function UserNav() {
   const { data: session } = useSession();
   const user = session?.user;

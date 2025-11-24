@@ -28,7 +28,8 @@ export default function App() {
       }
 
       setHomes(data.data || []);
-    } catch (error) {
+    } catch (error: any) {
+      toast.error(error.message);
       console.error("Error:", error);
     } finally {
       setLoading(false);
@@ -43,7 +44,11 @@ export default function App() {
       <Navbar />
       <div className="container mx-auto px-5 lg:px-10">
         <MapFilterItems />
-        {loading && <p className="text-center mt-10">Loading...</p>}
+        {loading && (
+          <div className="flex justify-center mt-10">
+            <div className="w-8 h-8 border-4 border-rose-600 border-dashed rounded-full animate-spin"></div>
+          </div>
+        )}
         {!loading && homes.length === 0 && (
           <p className="text-center mt-10">No homes found.</p>
         )}
