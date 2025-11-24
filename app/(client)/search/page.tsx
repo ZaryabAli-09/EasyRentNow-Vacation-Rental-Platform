@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { ListingCard } from "@/app/custom components/ListingCard";
 import { Navbar } from "@/app/custom components/Navbar";
 
@@ -44,7 +44,7 @@ export default function SearchPage() {
   }, []);
 
   return (
-    <>
+    <Suspense fallback={<div>Loading..</div>}>
       <Navbar label={`Search: ${filters.country || "Results"}`} />
 
       <div className="container mx-auto px-5 lg:px-10 mt-5">
@@ -66,6 +66,6 @@ export default function SearchPage() {
           ))}
         </div>
       </div>
-    </>
+    </Suspense>
   );
 }
