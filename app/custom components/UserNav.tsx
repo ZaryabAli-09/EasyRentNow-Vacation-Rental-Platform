@@ -64,7 +64,7 @@ export function UserNav() {
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <Link href="/my-homes" className="w-full">
+            <Link href="/profile/my-listings" className="w-full">
               My Listings
             </Link>
           </DropdownMenuItem>

@@ -34,7 +34,6 @@ export default function App() {
       setLoading(false);
     }
   }
-  console.log(homes);
   useEffect(() => {
     getHomesListing();
   }, []);

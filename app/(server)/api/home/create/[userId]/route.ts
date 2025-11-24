@@ -1,17 +1,9 @@
 import { NextRequest } from "next/server";
-import { v2 as cloudinary } from "cloudinary";
+import { cloudinary } from "@/lib/cloudinaryConfig";
 import { Home } from "@/models/Home";
 import { response } from "@/lib/helperFunctions";
 import { dbConnect } from "@/lib/db";
 
-// ----------------- CONFIG CLOUDINARY -----------------
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
-
-// ----------------- NEXT.JS ROUTE HANDLER -----------------
 export const POST = async (
   req: NextRequest,
   params: { params: { userId: string } }
