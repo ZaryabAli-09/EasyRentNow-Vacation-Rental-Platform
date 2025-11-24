@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 import { NextRequest } from "next/server";
 export async function GET(
   req: NextRequest,
-  context: { params: Promise<{ userId: number }> }
+  context: { params: Promise<{ userId: string }> }
 ) {
   try {
     const userId = (await context.params).userId; // params.userId is a string
