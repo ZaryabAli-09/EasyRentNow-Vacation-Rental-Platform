@@ -21,13 +21,16 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { useSession } from "next-auth/react";
 import toast from "react-hot-toast";
-
+import { Button } from "@/components/ui/button";
+import { ArrowBigLeft } from "lucide-react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 export default function FullHomeCreationPage() {
   const { data: session } = useSession();
   const userid = session?.user?._id;
-  // MULTI-STEP FORM STATE
   const [step, setStep] = useState(1);
 
+  const router = useRouter();
   // FORM STATES
   const [category, setCategory] = useState("");
   const [title, setTitle] = useState("");
@@ -63,8 +66,6 @@ export default function FullHomeCreationPage() {
     formData.append("bathroom", bathroom.toString());
     formData.append("countryValue", countryValue);
 
-    console.log("DATA SENT →", Object.fromEntries(formData.entries()));
-
     try {
       setLoading(true);
       const response = await fetch(`/api/home/create/${userid}`, {
@@ -75,6 +76,7 @@ export default function FullHomeCreationPage() {
       if (response.ok) {
         toast.success(result.message);
         setLoading(false);
+        router.push("/");
       }
       if (!response.ok) {
         toast.error(result.message);
@@ -88,192 +90,190 @@ export default function FullHomeCreationPage() {
   };
 
   return (
-    <div className="w-full max-w-3xl mx-auto px-4 py-10 space-y-16">
-      {/* STEP 1 — CATEGORY */}
-      {step === 1 && (
-        <section>
-          <h2 className="text-3xl font-semibold tracking-tight transition-colors">
-            Which of these best describe your Home?
-          </h2>
+    <>
+      <div className="p-2 fixed">
+        <Button>
+          <Link href={"/"}>
+            <ArrowBigLeft />
+          </Link>
+        </Button>
+      </div>
+      <div className="w-full max-w-3xl mx-auto px-4 py-5 space-y-16">
+        {step === 1 && (
+          <section>
+            <h2 className="text-3xl text-gray-600 font-serif tracking-tight transition-colors">
+              Which of these best describe your Home?
+            </h2>
 
-          <SelectCategory
-            value={category}
-            onSelect={(value: string) => setCategory(value)}
-          />
+            <SelectCategory
+              value={category}
+              onSelect={(value: string) => setCategory(value)}
+            />
 
-          <div className="flex justify-end mt-10">
-            <button
-              disabled={!category}
-              onClick={() => setStep(2)}
-              className={`px-6 py-3 rounded-lg text-white
-              ${
-                category
-                  ? "bg-black hover:bg-neutral-800"
-                  : "bg-gray-400 cursor-not-allowed"
-              }`}
-            >
-              Next
-            </button>
-          </div>
-        </section>
-      )}
-
-      {/* STEP 2 — DESCRIPTION */}
-      {step === 2 && (
-        <section>
-          <h2 className="text-2xl md:text-3xl font-semibold">
-            Please describe your home!
-          </h2>
-
-          <div className="mt-10 flex flex-col gap-y-5">
-            <div>
-              <Label>Title</Label>
-              <Input
-                type="text"
-                placeholder="Short and simple..."
-                required
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-              />
+            <div className="flex justify-end mt-10">
+              <Button
+                className="cursor-pointer"
+                disabled={!category}
+                onClick={() => setStep(2)}
+              >
+                Next
+              </Button>
             </div>
+          </section>
+        )}
 
-            <div>
-              <Label>Description</Label>
-              <Textarea
-                placeholder="Please describe your home..."
-                required
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-              />
-            </div>
+        {/* STEP 2 — DESCRIPTION */}
+        {step === 2 && (
+          <section>
+            <h2 className="text-2xl text-gray-600 md:text-3xl font-serif">
+              Please describe your home!
+            </h2>
 
-            <div>
-              <Label>Price</Label>
-              <Input
-                type="number"
-                placeholder="Price per Night in USD"
-                min={10}
-                required
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-              />
-            </div>
+            <div className="mt-10 flex flex-col gap-y-5">
+              <div>
+                <Label>Title</Label>
+                <Input
+                  type="text"
+                  placeholder="Short and simple..."
+                  required
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                />
+              </div>
 
-            <div>
-              <Label>Image</Label>
-              <Input
-                type="file"
-                required
-                onChange={(e) => setImage(e.target.files?.[0] || null)}
-              />
-            </div>
+              <div>
+                <Label>Description</Label>
+                <Textarea
+                  placeholder="Please describe your home..."
+                  required
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                />
+              </div>
 
-            {/* COUNTERS */}
-            <Card>
-              <CardHeader className="flex flex-col gap-y-8">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="underline font-medium">Guests</h3>
-                    <p className="text-muted-foreground text-sm">
-                      How many guests?
-                    </p>
+              <div>
+                <Label>Price</Label>
+                <Input
+                  type="number"
+                  placeholder="Price per Night in USD"
+                  min={10}
+                  required
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                />
+              </div>
+
+              <div>
+                <Label>Image</Label>
+                <Input
+                  type="file"
+                  required
+                  onChange={(e) => setImage(e.target.files?.[0] || null)}
+                />
+              </div>
+
+              {/* COUNTERS */}
+              <Card>
+                <CardHeader className="flex flex-col gap-y-8">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="underline font-medium">Guests</h3>
+                      <p className="text-muted-foreground text-sm">
+                        How many guests?
+                      </p>
+                    </div>
+                    <Counter name="guest" value={guest} onChange={setGuest} />
                   </div>
-                  <Counter name="guest" value={guest} onChange={setGuest} />
-                </div>
 
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="underline font-medium">Rooms</h3>
-                    <p className="text-muted-foreground text-sm">
-                      How many rooms?
-                    </p>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="underline font-medium">Rooms</h3>
+                      <p className="text-muted-foreground text-sm">
+                        How many rooms?
+                      </p>
+                    </div>
+                    <Counter name="room" value={room} onChange={setRoom} />
                   </div>
-                  <Counter name="room" value={room} onChange={setRoom} />
-                </div>
 
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="underline font-medium">Bathrooms</h3>
-                    <p className="text-muted-foreground text-sm">
-                      How many bathrooms?
-                    </p>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="underline font-medium">Bathrooms</h3>
+                      <p className="text-muted-foreground text-sm">
+                        How many bathrooms?
+                      </p>
+                    </div>
+                    <Counter
+                      name="bathroom"
+                      value={bathroom}
+                      onChange={setBathroom}
+                    />
                   </div>
-                  <Counter
-                    name="bathroom"
-                    value={bathroom}
-                    onChange={setBathroom}
-                  />
-                </div>
-              </CardHeader>
-            </Card>
-          </div>
+                </CardHeader>
+              </Card>
+            </div>
 
-          {/* NAVIGATION BUTTONS */}
-          <div className="flex justify-between mt-10">
-            <button
-              onClick={() => setStep(1)}
-              className="px-6 py-3 rounded-lg border"
-            >
-              Back
-            </button>
+            <div className="flex justify-between mt-10">
+              <Button
+                variant={"outline"}
+                className="cursor-pointer"
+                onClick={() => setStep(1)}
+              >
+                Back{" "}
+              </Button>
+              <Button className="cursor-pointer" onClick={() => setStep(3)}>
+                Next
+              </Button>
+            </div>
+          </section>
+        )}
 
-            <button
-              onClick={() => setStep(3)}
-              className="px-6 py-3 bg-black text-white rounded-lg hover:bg-neutral-800"
-            >
-              Next
-            </button>
-          </div>
-        </section>
-      )}
+        {step === 3 && (
+          <section>
+            <h2 className="text-2xl md:text-3xl font-serif text-gray-600 mb-10">
+              Where is your Home located?
+            </h2>
 
-      {/* STEP 3 — LOCATION */}
-      {step === 3 && (
-        <section>
-          <h2 className="text-2xl md:text-3xl font-semibold mb-10">
-            Where is your Home located?
-          </h2>
+            <Select onValueChange={(value) => setCountryValue(value)} required>
+              <SelectTrigger>
+                <SelectValue placeholder="Select a Country" />
+              </SelectTrigger>
 
-          <Select onValueChange={(value) => setCountryValue(value)} required>
-            <SelectTrigger>
-              <SelectValue placeholder="Select a Country" />
-            </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Countries</SelectLabel>
+                  {getAllCountries().map((item) => (
+                    <SelectItem key={item.value} value={item.value}>
+                      {item.flag} {item.label} / {item.region}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
 
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Countries</SelectLabel>
-                {getAllCountries().map((item) => (
-                  <SelectItem key={item.value} value={item.value}>
-                    {item.flag} {item.label} / {item.region}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+            <div className="mt-5">
+              <LazyMap locationValue={countryValue} />
+            </div>
 
-          <div className="mt-5">
-            <LazyMap locationValue={countryValue} />
-          </div>
-
-          {/* FINAL BUTTONS */}
-          <div className="flex justify-between mt-10">
-            <button
-              onClick={() => setStep(2)}
-              className="px-6 py-3 rounded-lg border"
-            >
-              Back
-            </button>
-
-            <button
-              onClick={handleSubmit}
-              disabled={loading}
-              className="disabled:cursor-not-allowed  px-6 py-3 bg-black text-white rounded-lg hover:bg-neutral-800"
-            >
-              {loading ? "Listing..." : " List Home"}
-            </button>
-          </div>
-        </section>
-      )}
-    </div>
+            {/* FINAL BUTTONS */}
+            <div className="flex justify-between mt-10">
+              <Button
+                variant={"outline"}
+                className="cursor-pointer"
+                onClick={() => setStep(2)}
+              >
+                Back
+              </Button>
+              <Button
+                onClick={handleSubmit}
+                disabled={loading}
+                className="disabled:cursor-not-allowed cursor-pointer"
+              >
+                {loading ? "Listing..." : " List Home"}
+              </Button>
+            </div>
+          </section>
+        )}
+      </div>
+    </>
   );
 }
