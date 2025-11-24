@@ -28,7 +28,7 @@ export function Navbar({ label }: { label?: string }) {
         <UserNav />
       </div>
       {label && (
-        <div className="text-center text-white py-2 text-sm font-bold bg-rose-500">
+        <div className="text-center text-gray-600 py-2 text-sm bg-slate-100">
           {label.toUpperCase()}
         </div>
       )}

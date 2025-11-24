@@ -16,15 +16,18 @@ export function ProfileListingTable({ myHomes, loading, handleDelete }: any) {
 
   return (
     <div className="container mx-auto px-5 lg:px-20 py-10">
-      {loading && <p className="text-center mt-10 text-gray-500">Loading...</p>}
-
+      {loading && (
+        <div className="flex justify-center mt-10">
+          <div className="w-8 h-8 border-4 border-rose-600 border-dashed rounded-full animate-spin"></div>
+        </div>
+      )}
       {!loading && myHomes.length === 0 && (
-        <p className="text-center mt-10 text-gray-500">No homes found.</p>
+        <p className="text-center mt-10">No homes found.</p>
       )}
 
       {!loading && myHomes.length > 0 && (
         <div className="overflow-x-auto">
-          <Table className="min-w-full border border-gray-200 rounded-lg">
+          <Table className="min-w-full border border-gray-200 rounded-lg ">
             <TableHeader>
               <TableRow className="bg-gray-100">
                 <TableHead>Image</TableHead>
@@ -40,7 +43,7 @@ export function ProfileListingTable({ myHomes, loading, handleDelete }: any) {
                 return (
                   <TableRow
                     key={home._id}
-                    className="hover:bg-gray-50 transition-colors"
+                    className="hover:bg-gray-50 transition-colors "
                   >
                     {/* Image */}
                     <TableCell className="w-28 h-20 relative">

@@ -70,8 +70,8 @@ export default function MyListings() {
   return (
     <>
       {label && (
-        <div className="text-center py-2 text-sm font-medium bg-gray-100">
-          {label}
+        <div className="text-center text-gray-600 py-2 text-sm bg-slate-100">
+          {label.toUpperCase()}
         </div>
       )}
       <div className="container mx-auto px-5 lg:px-20">
