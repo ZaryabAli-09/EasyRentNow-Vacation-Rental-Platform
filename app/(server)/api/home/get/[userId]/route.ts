@@ -1,13 +1,13 @@
 import { getErrorMessage, response } from "@/lib/helperFunctions";
 import { Home } from "@/models/Home";
-import { NextRequest } from "next/server";
 import mongoose from "mongoose";
+import { NextRequest } from "next/server";
 export async function GET(
   req: NextRequest,
-  context: { params: { userId: string } } // ✅ this is correct
+  context: { params: Promise<{ userId: number }> }
 ) {
   try {
-    const { userId } = context.params;
+    const userId = (await context.params).userId; // params.userId is a string
     if (!userId) {
       return response(false, 404, "UserId not found");
     }
