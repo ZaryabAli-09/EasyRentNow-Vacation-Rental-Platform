@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import { MapFilterItems } from "./custom components/MapFilterItems";
 import toast from "react-hot-toast";
 import { getErrorMessage } from "@/lib/helperFunctions";
+import { Button } from "@/components/ui/button";
+import { Heart } from "lucide-react";
 
 interface Home {
   _id: string;
@@ -17,6 +19,44 @@ interface Home {
 export default function App() {
   const [homes, setHomes] = useState<Home[]>([]);
   const [loading, setLoading] = useState(true);
+  const [favorites, setFavorites] = useState<string[]>([]);
+  async function handleFavoriteButton(homeId: string) {
+    try {
+      const res = await fetch("/api/home/favorites/toggle", {
+        method: "POST",
+        body: JSON.stringify({ homeId }),
+      });
+
+      const data = await res.json();
+
+      // Update favorites state
+      if (data.added) {
+        setFavorites((prev) => [...prev, homeId]);
+      } else if (data.removed) {
+        setFavorites((prev) => prev.filter((id) => id !== homeId.toString()));
+      }
+      fetchFavorites();
+
+      toast.success(data.message);
+    } catch (err: unknown) {
+      toast.error(getErrorMessage(err));
+    }
+  }
+  async function fetchFavorites() {
+    try {
+      const res = await fetch("/api/home/favorites/get");
+      const data = await res.json();
+
+      console.log(data);
+      if (!res.ok) {
+        throw new Error(data.message);
+      }
+      console.log(data);
+      setFavorites(data.data || []); // fallback to empty array
+    } catch (err: unknown) {
+      toast.error(getErrorMessage(err));
+    }
+  }
 
   async function getHomesListing() {
     try {
@@ -36,10 +76,13 @@ export default function App() {
       setLoading(false);
     }
   }
+
   useEffect(() => {
     getHomesListing();
+    fetchFavorites();
   }, []);
 
+  // console.log(favorites);
   return (
     <>
       <Navbar />
@@ -55,16 +98,37 @@ export default function App() {
         )}
 
         <div className="grid lg:grid-cols-4 sm:grid-cols-2 md:grid-cols-3 gap-8 mt-8">
-          {homes.map((home) => (
-            <ListingCard
-              key={home._id}
-              description={home.description}
-              imagePath={home.photo}
-              location={home.country}
-              price={home.price}
-              homeId={home._id}
-            />
-          ))}
+          {homes.map((home) => {
+            const isFav = favorites.includes(home._id);
+            return (
+              <div key={home._id} className="relative ">
+                <Button
+                  onClick={() => handleFavoriteButton(home._id)}
+                  variant={"outline"}
+                  className="absolute top-2 right-2 z-10 hover:cursor-pointer"
+                >
+                  <Heart
+                    className={
+                      favorites.includes(home._id)
+                        ? "text-red-500"
+                        : "text-gray-400"
+                    }
+                    fill={
+                      favorites.includes(home._id) ? "currentColor" : "none"
+                    }
+                  />
+                </Button>
+                <ListingCard
+                  key={home._id}
+                  description={home.description}
+                  imagePath={home.photo}
+                  location={home.country}
+                  price={home.price}
+                  homeId={home._id}
+                />
+              </div>
+            );
+          })}
         </div>
       </div>
     </>

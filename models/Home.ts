@@ -64,24 +64,6 @@ const homeSchema = new mongoose.Schema<IHome>(
 
 const Home = mongoose.models?.Home || mongoose.model<IHome>("Home", homeSchema);
 
-const favoriteSchema = new mongoose.Schema<IFavorite>(
-  {
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-    homeId: { type: mongoose.Schema.Types.ObjectId, ref: "Home" },
-  },
-  { timestamps: { createdAt: "createAt", updatedAt: "updatedAt" } }
-);
-
-// ----------------- FAVORITE SCHEMA -----------------
-export interface IFavorite {
-  _id?: mongoose.Types.ObjectId;
-  userId?: mongoose.Types.ObjectId;
-  homeId?: mongoose.Types.ObjectId;
-}
-const Favorite =
-  mongoose.models?.Favorite ||
-  mongoose.model<IFavorite>("Favorite", favoriteSchema);
-
 // ----------------- RESERVATION SCHEMA -----------------
 export interface IReservation {
   _id?: mongoose.Types.ObjectId;
