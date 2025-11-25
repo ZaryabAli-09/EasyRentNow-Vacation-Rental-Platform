@@ -12,7 +12,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-
+import { useRouter } from "next/navigation";
 interface IReservation {
   userId: string;
   homeId: string;
@@ -31,6 +31,8 @@ export default function HomePage() {
   const [reservedDates, setReservedDates] = useState<
     { startDate: string; endDate: string }[]
   >([]);
+  const router = useRouter();
+  const { getCountryByValue } = useCountries();
 
   const { data: session } = useSession();
   const user = session?.user;
@@ -46,8 +48,6 @@ export default function HomePage() {
       if (!res.ok) throw new Error(json.message);
 
       setHome(json.data[0]);
-
-      const { getCountryByValue } = useCountries();
 
       if (json.data[0]?.country) {
         const locationData = getCountryByValue(json.data[0].country);
@@ -82,8 +82,8 @@ export default function HomePage() {
       if (!res.ok) {
         throw new Error(result.message);
       }
-
       toast.success(result.message);
+      router.push("/");
     } catch (err) {
       toast.error(getErrorMessage(err));
     }
