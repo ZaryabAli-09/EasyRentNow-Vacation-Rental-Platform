@@ -12,7 +12,7 @@ export async function GET() {
     console.log("user logger", session?.user._id);
 
     if (!session || !session.user._id) {
-      return response(false, 404, "No user found");
+      return response(false, 404, "Unauthorized request please sign in");
     }
     const favoritesHomes = await Favorite.aggregate([
       { $match: { userId: new mongoose.Types.ObjectId(session.user._id) } },

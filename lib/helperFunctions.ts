@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { addDays, isSameDay } from "date-fns";
 
 export function response<T = unknown>(
   success: boolean,
@@ -30,3 +31,21 @@ export async function generateOtp() {
 
   return { otp, expiry };
 }
+
+export const getDisabledDates = (
+  reservations: { startDate: string; endDate: string }[]
+) => {
+  const disabled: Date[] = [];
+
+  reservations.forEach(({ startDate, endDate }) => {
+    let current = new Date(startDate);
+    const end = new Date(endDate);
+
+    while (current <= end) {
+      disabled.push(new Date(current)); // ensure Date object
+      current = addDays(current, 1);
+    }
+  });
+
+  return disabled;
+};
