@@ -52,10 +52,10 @@ export default function SearchHomes() {
 
   return (
     <>
-      <Navbar label={`Search: ${filters.country || "Results"}`} />
+      <Navbar />
 
       <div className="container mx-auto px-5 lg:px-10 mt-5">
-        <h2 className="text-lg font-semibold mb-5">Search Results</h2>
+        <h2 className="text-3xl font-semibold my-6">Search Results</h2>
 
         {loading && <p>Loading...</p>}
         {!loading && homes.length === 0 && <p>No homes found.</p>}

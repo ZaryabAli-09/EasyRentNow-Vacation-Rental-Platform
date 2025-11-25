@@ -53,7 +53,7 @@ export function SearchModalCompnent() {
     <Dialog>
       <DialogTrigger asChild>
         <div className="rounded-full py-2 px-5 border flex items-center cursor-pointer">
-          <div className="sm:flex h-full divide-x font-medium hidden sm:visible text-gray-600">
+          <div className="sm:flex h-full divide-x font-semibold hidden sm:visible text-gray-600">
             <p className="px-4">Anywhere</p>
             <p className="px-4">Any Week</p>
             <p className="px-4">Add Guests</p>

@@ -1,14 +1,16 @@
 import { Favorite } from "@/models/Favorite";
-import { dbConnect } from "@/lib/db"; // your db connection
+import { dbConnect } from "@/lib/db";
 import { getServerSession } from "next-auth";
 import { getErrorMessage, response } from "@/lib/helperFunctions";
+import { authOptions } from "@/lib/authOptions";
 
 export async function POST(req: Request) {
   try {
     await dbConnect();
 
-    const session = await getServerSession();
-    if (!session) {
+    const session = await getServerSession(authOptions);
+    console.log(session?.user?._id);
+    if (!session || !session.user._id) {
       return response(false, 403, "Please sign in");
     }
 

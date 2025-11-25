@@ -44,7 +44,7 @@ export default function App() {
   }
   async function fetchFavorites() {
     try {
-      const res = await fetch("/api/home/favorites/get");
+      const res = await fetch("/api/home/favorites/get-ids");
       const data = await res.json();
 
       console.log(data);

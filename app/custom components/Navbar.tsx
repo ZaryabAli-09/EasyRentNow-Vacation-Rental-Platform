@@ -5,7 +5,7 @@ import MobileLogo from "../../public/airbnb-mobile.webp";
 import { UserNav } from "./UserNav";
 import { SearchModalCompnent } from "./SearchComponent";
 
-export function Navbar({ label }: { label?: string }) {
+export function Navbar() {
   return (
     <nav className="w-full border-b">
       <div className="flex items-center justify-between container mx-auto px-5 lg:px-10 py-5">
@@ -27,11 +27,6 @@ export function Navbar({ label }: { label?: string }) {
 
         <UserNav />
       </div>
-      {label && (
-        <div className="text-center text-gray-600 py-2 text-sm bg-slate-100">
-          {label.toUpperCase()}
-        </div>
-      )}
     </nav>
   );
 }

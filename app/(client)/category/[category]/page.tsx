@@ -50,7 +50,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
 
   return (
     <>
-      <Navbar label={`Category: ${category}`} />
+      <Navbar />
 
       <div className="container mx-auto px-5 lg:px-10 mt-5">
         <MapFilterItems />

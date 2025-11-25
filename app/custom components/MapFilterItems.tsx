@@ -17,7 +17,7 @@ export function MapFilterItems() {
           href={`/category/${item.name}`}
           className={`flex flex-col gap-y-3 items-center opacity-85 hover:opacity-100 ${
             categoryPath === item.name
-              ? "border-b-2 border-rose-600 opacity-100"
+              ? "border-b-2 border-black opacity-100"
               : ""
           }`}
         >

@@ -97,7 +97,10 @@ export function UserNav() {
           </DropdownMenuItem>
 
           <DropdownMenuItem>
-            <Link href="/favorites" className="w-full flex items-center gap-2">
+            <Link
+              href="/profile/my-favorites"
+              className="w-full flex items-center gap-2"
+            >
               <Heart className="w-4 h-4" />
               My Favorites
             </Link>
@@ -105,7 +108,7 @@ export function UserNav() {
 
           <DropdownMenuItem>
             <Link
-              href="/reservations"
+              href="/profile/my-reservations"
               className="w-full flex items-center gap-2"
             >
               <CalendarDays className="w-4 h-4" />

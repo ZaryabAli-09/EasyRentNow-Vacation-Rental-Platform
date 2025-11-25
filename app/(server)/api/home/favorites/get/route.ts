@@ -1,28 +1,50 @@
-import { NextResponse } from "next/server";
-import { Favorite } from "@/models/Favorite";
+import { authOptions } from "@/lib/authOptions";
 import { dbConnect } from "@/lib/db";
-import { getServerSession } from "next-auth";
 import { getErrorMessage, response } from "@/lib/helperFunctions";
-
+import { Favorite } from "@/models/Favorite";
+import { getServerSession } from "next-auth";
+import mongoose from "mongoose";
 export async function GET() {
   try {
     await dbConnect();
 
-    const session = await getServerSession();
-    if (!session) {
-      return response(false, 404, "No favourites found");
+    const session = await getServerSession(authOptions);
+    console.log("user logger", session?.user._id);
+
+    if (!session || !session.user._id) {
+      return response(false, 404, "No user found");
     }
+    const favoritesHomes = await Favorite.aggregate([
+      { $match: { userId: new mongoose.Types.ObjectId(session.user._id) } },
+      {
+        $lookup: {
+          from: "homes",
+          localField: "homeId",
+          foreignField: "_id",
+          as: "home",
+        },
+      },
+      { $unwind: "$home" },
+      {
+        $replaceRoot: { newRoot: "$home" }, // make the home document the root
+      },
+      {
+        $project: {
+          _id: 1,
+          description: 1,
+          photo: 1,
+          country: 1,
+          price: 1,
+        },
+      },
+    ]);
 
-    const favorites = await Favorite.find({
-      userId: session.user._id,
-    }).select("homeId");
-
-    const favoriteHomeIds = favorites.map((fav) => fav.homeId.toString());
+    console.log(favoritesHomes);
     return response(
       true,
       200,
-      "Successfully get favorite home ids",
-      favoriteHomeIds
+      "Successfully fetched favorite homes",
+      favoritesHomes
     );
   } catch (err) {
     return response(false, 501, getErrorMessage(err));
