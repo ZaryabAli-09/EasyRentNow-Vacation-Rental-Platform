@@ -59,7 +59,7 @@ export function UserNav() {
             />
           ) : (
             <div className="bg-rose-600 p-2 w-8 h-8 font-bold text-white flex items-center justify-center rounded-full">
-              Z
+              {user?.email?.split("")[0].toUpperCase()}
             </div>
           )}
         </div>

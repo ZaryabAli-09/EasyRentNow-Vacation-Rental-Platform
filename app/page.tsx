@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import { getErrorMessage } from "@/lib/helperFunctions";
 import { Button } from "@/components/ui/button";
 import { Heart } from "lucide-react";
+import { NoItems } from "./custom components/NoItem";
 
 interface Home {
   _id: string;
@@ -29,6 +30,11 @@ export default function App() {
 
       const data = await res.json();
 
+      if (!res.ok) {
+        toast.error(data.message);
+        return;
+      }
+
       // Update favorites state
       if (data.added) {
         setFavorites((prev) => [...prev, homeId]);
@@ -49,7 +55,8 @@ export default function App() {
 
       console.log(data);
       if (!res.ok) {
-        throw new Error(data.message);
+        return;
+        // throw new Error(data.message);
       }
       console.log(data);
       setFavorites(data.data || []); // fallback to empty array
@@ -94,7 +101,10 @@ export default function App() {
           </div>
         )}
         {!loading && homes.length === 0 && (
-          <p className="text-center mt-10">No homes found.</p>
+          <NoItems
+            description="Please check other category or create your own listing!"
+            title="Sorry no listing found"
+          />
         )}
 
         <div className="grid lg:grid-cols-4 sm:grid-cols-2 md:grid-cols-3 gap-8 mt-8">

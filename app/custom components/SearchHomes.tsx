@@ -4,6 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ListingCard } from "@/app/custom components/ListingCard";
 import { Navbar } from "@/app/custom components/Navbar";
+import { NoItems } from "./NoItem";
 
 interface Home {
   _id: string;
@@ -58,7 +59,12 @@ export default function SearchHomes() {
         <h2 className="text-3xl font-semibold my-6">Search Results</h2>
 
         {loading && <p>Loading...</p>}
-        {!loading && homes.length === 0 && <p>No homes found.</p>}
+        {!loading && homes.length === 0 && (
+          <NoItems
+            description="Please search other category or create your own listing!"
+            title="Sorry no listing found"
+          />
+        )}
 
         <div className="grid lg:grid-cols-4 sm:grid-cols-2 gap-8">
           {homes.map((home: Home) => (

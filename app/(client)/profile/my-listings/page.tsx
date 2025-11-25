@@ -75,12 +75,9 @@ export default function MyListings() {
 
   return (
     <>
-      {label && (
-        <div className="text-center text-gray-600 py-2 text-sm bg-slate-100">
-          {label.toUpperCase()}
-        </div>
-      )}
       <div className="container mx-auto px-5 lg:px-20">
+        <h2 className="text-3xl font-semibold my-6">My Listings</h2>
+
         <ProfileListingTable
           myHomes={myHomes}
           handleDelete={handleDelete}

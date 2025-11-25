@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { getErrorMessage } from "@/lib/helperFunctions";
 import toast from "react-hot-toast";
+import { NoItems } from "@/app/custom components/NoItem";
 
 interface CategoryPageProps {
   params: Promise<{ category: string }>; // mark as promise
@@ -73,7 +74,10 @@ export default function CategoryPage({ params }: CategoryPageProps) {
         )}
 
         {!loading && homes.length === 0 && (
-          <p className="text-center mt-10">No homes found.</p>
+          <NoItems
+            description="Please check other category or create your own listing!"
+            title="Sorry no listing found"
+          />
         )}
 
         {!loading && homes.length > 0 && (
