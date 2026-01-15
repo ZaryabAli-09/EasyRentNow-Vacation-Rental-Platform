@@ -12,7 +12,7 @@ export default function ForgotPassword() {
           <Link href={"/"}>
             {" "}
             <Image
-              className="w-30 h-10
+              className="w-30
           "
               src={Logo}
               alt="Logo"
