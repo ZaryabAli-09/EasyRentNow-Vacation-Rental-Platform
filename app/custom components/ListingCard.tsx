@@ -25,7 +25,7 @@ export function ListingCard({
       <div className="relative h-72">
         <Image
           src={imagePath}
-          alt="Image of House"
+          alt="Image of Housee"
           fill
           className="rounded-lg h-full object-cover"
         />
