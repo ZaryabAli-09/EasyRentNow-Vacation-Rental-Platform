@@ -215,7 +215,7 @@ export default function HomePage() {
             </Button>
           ) : (
             <Button className="w-full" asChild>
-              <Link href="/login">Make a Reservation</Link>
+              <Link href="/sign-in">Make a Reservation</Link>
             </Button>
           )}
         </div>
