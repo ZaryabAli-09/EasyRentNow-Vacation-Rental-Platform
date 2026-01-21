@@ -34,7 +34,7 @@ export const authOptions: NextAuthOptions = {
 
           const isPasswordValid = await bcrypt.compare(
             credentials.password,
-            user.password
+            user.password,
           );
 
           if (!isPasswordValid) {
@@ -60,10 +60,14 @@ export const authOptions: NextAuthOptions = {
     },
 
     async jwt({ token, user }) {
+      // On sign in
       if (user) {
-        token._id = user._id; // Ensure id is a string
+        token._id = user._id;
         token.role = user.role;
+        token.email = user.email;
+        token.name = user.name;
       }
+      // Token is always returned, even if user is not present
       return token;
     },
 

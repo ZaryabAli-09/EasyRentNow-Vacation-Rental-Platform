@@ -16,27 +16,28 @@ export async function middleware(request: NextRequest) {
   console.log("Token:", token);
   console.log("User role:", token?.role);
 
-  // No token → redirect to login
-  if (
-    !token &&
-    (pathname.startsWith("/admin") ||
-      pathname.startsWith("/profile") ||
-      pathname.startsWith("/home"))
-  ) {
-    return NextResponse.redirect(new URL("/sign-in", request.url));
-  }
-
   // Admin routes → only allow role=admin
   if (pathname.startsWith("/admin")) {
-    if (token?.role !== "admin") {
+    if (!token || token?.role !== "admin") {
+      console.log(
+        "Admin route: redirecting - token:",
+        !!token,
+        "role:",
+        token?.role,
+      );
       return NextResponse.redirect(new URL("/sign-in", request.url));
     }
   }
 
-  // User routes → only allow logged in users
+  // User routes → allow logged in users with user or admin role
   if (pathname.startsWith("/home") || pathname.startsWith("/profile")) {
     if (!token || (token?.role !== "user" && token?.role !== "admin")) {
-      console.log("Redirecting to sign-in: no token or invalid role");
+      console.log(
+        "User route: redirecting - token:",
+        !!token,
+        "role:",
+        token?.role,
+      );
       return NextResponse.redirect(new URL("/sign-in", request.url));
     }
   }
