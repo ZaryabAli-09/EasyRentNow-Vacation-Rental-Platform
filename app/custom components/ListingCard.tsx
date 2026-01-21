@@ -21,7 +21,7 @@ export function ListingCard({
   const country = getCountryByValue(location);
 
   return (
-    <div href={`/home/${homeId}`} className="flex flex-col cursor-pointer">
+    <Link href={`/home/${homeId}`} className="flex flex-col cursor-pointer">
       <div className="relative h-72">
         <Image
           src={imagePath}
@@ -31,7 +31,7 @@ export function ListingCard({
         />
       </div>
 
-      <Link href={`/home/${homeId}`} className="mt-2">
+      <div className="mt-2">
         <h3 className="font-medium text-base">
           {country?.flag} {country?.label} / {country?.region}
         </h3>
@@ -41,7 +41,7 @@ export function ListingCard({
         <p className="pt-2 text-muted-foreground">
           <span className="font-medium text-black">${price}</span> Night
         </p>
-      </Link>
-    </div>
+      </div>
+    </Link>
   );
 }
