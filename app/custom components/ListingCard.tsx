@@ -21,7 +21,7 @@ export function ListingCard({
   const country = getCountryByValue(location);
 
   return (
-    <div className="flex flex-col">
+    <div href={`/home/${homeId}`} className="flex flex-col cursor-pointer">
       <div className="relative h-72">
         <Image
           src={imagePath}

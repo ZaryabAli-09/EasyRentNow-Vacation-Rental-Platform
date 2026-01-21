@@ -13,6 +13,7 @@ export async function middleware(request: NextRequest) {
 
   console.log("Path:", pathname);
   console.log("Token exists:", !!token);
+  console.log("Token:", token);
   console.log("User role:", token?.role);
 
   // No token → redirect to login
@@ -34,7 +35,8 @@ export async function middleware(request: NextRequest) {
 
   // User routes → only allow logged in users
   if (pathname.startsWith("/home") || pathname.startsWith("/profile")) {
-    if (token?.role !== "user") {
+    if (!token || (token?.role !== "user" && token?.role !== "admin")) {
+      console.log("Redirecting to sign-in: no token or invalid role");
       return NextResponse.redirect(new URL("/sign-in", request.url));
     }
   }
