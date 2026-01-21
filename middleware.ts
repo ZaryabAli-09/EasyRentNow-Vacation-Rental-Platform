@@ -30,7 +30,7 @@ export async function middleware(request: NextRequest) {
   }
 
   // User routes → allow logged in users with user or admin role
-  if (pathname.startsWith("/home") || pathname.startsWith("/profile")) {
+  if (pathname.startsWith("/home/create") || pathname.startsWith("/profile")) {
     if (!token || (token?.role !== "user" && token?.role !== "admin")) {
       console.log(
         "User route: redirecting - token:",
@@ -46,5 +46,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/home/:path*", "/profile/:path*"], // Protect all /admin/* and /user/* routes
+  matcher: ["/admin/:path*", "/home/create*", "/profile/:path*"], // Protect all /admin/* and /user/* routes
 };
